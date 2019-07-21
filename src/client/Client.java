@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client {
@@ -16,8 +17,19 @@ public class Client {
 		this.port = port;
 	}
 	
-	private void execute () {
+	public static void main(String[] args) throws IOException {
+		Client client = new Client(InetAddress.getLocalHost(), 9999);
+		client.execute();
+	}
+	
+	private void execute () throws IOException {
+		Socket client = new Socket(host, port);
+		System.out.println("đã kết nối tới Server");
+		ReadClient read = new ReadClient(client);
+		read.start();
 		
+		WriteClient write = new WriteClient(client);
+		write.start();
 	}
 }
 
@@ -42,9 +54,9 @@ class ReadClient extends Thread {
 			try {
 				din.close();
 				client.close();
-			} catch (IOException e) {
+			} catch (IOException ex) {
 				System.err.println("Lỗi cơm mẹ nấu rồi, ahihi :3");
-				e.printStackTrace();
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -71,13 +83,12 @@ class WriteClient extends Thread {
 			while(true) {
 				String msg = scan.nextLine();
 				dout.writeUTF(msg);
-				System.out.println("Đã gửi: \"" + "\"Cho Server!" );
 			}
 		} catch (IOException e) {
 			try {
 				dout.close();
 				client.close();
-			} catch (IOException e) {
+			} catch (IOException ex) {
 				System.err.println("Lỗi cơm mẹ nấu rồi, ahihi :3");
 			}
 		}
