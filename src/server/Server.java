@@ -61,6 +61,13 @@ class readServer extends Thread {
 			}
 			while (true) {
 				String msg = din.readUTF();
+				if(msg.contains("exit")) {
+					Server.listSocket.remove(server);
+					System.out.println("Đã đóng kết nối với " + name);
+					din.close();
+					server.close();
+					continue;
+				}
 				for (Socket item : Server.listSocket) {
 					if ((item.getPort() != server.getPort()) && (item.getLocalAddress() != server.getLocalAddress())) {
 						dout = new DataOutputStream(item.getOutputStream());

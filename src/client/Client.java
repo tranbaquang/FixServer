@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client {
@@ -24,7 +23,7 @@ public class Client {
 
 	private void execute() throws IOException {
 		Scanner scan = new Scanner(System.in);
-		System.out.println("Nhập tên của Bạn: ");
+		System.out.print("Nhập tên của Bạn: ");
 		String name = scan.nextLine();
 
 		Socket client = new Socket(host, port);
