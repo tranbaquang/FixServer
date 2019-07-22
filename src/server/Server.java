@@ -11,6 +11,7 @@ public class Server {
 
 	private int port;
 	public static ArrayList<Socket> listSocket;
+
 	public Server(int port) {
 		this.port = port;
 	}
@@ -25,7 +26,7 @@ public class Server {
 		ServerSocket server = new ServerSocket(port);
 		System.out.println("[#] Server đã hoạt động\nĐang chờ kết nối ...");
 		while (true) {
-			Socket client = server.accept();		
+			Socket client = server.accept();
 			System.out.println("[#] Co client Da ket noi vao room chat");
 			Server.listSocket.add(client);
 			readServer read = new readServer(client);
@@ -51,9 +52,9 @@ class readServer extends Thread {
 			din = new DataInputStream(server.getInputStream());
 			String name = din.readUTF();
 			System.out.println("[#]ahihihi " + name + " da ket noi vao room");
+
 			for (Socket item : Server.listSocket) {
-				if ((item.getPort() != server.getPort()) 
-						&& (item.getLocalAddress() != server.getLocalAddress())) {
+				if ((item.getPort() != server.getPort()) && (item.getLocalAddress() != server.getLocalAddress())) {
 					dout = new DataOutputStream(item.getOutputStream());
 					dout.writeUTF("[#] " + name + " da ket noi voi anh em!!!");
 				}
@@ -61,13 +62,12 @@ class readServer extends Thread {
 			while (true) {
 				String msg = din.readUTF();
 				for (Socket item : Server.listSocket) {
-					if ((item.getPort() != server.getPort()) 
-							&& (item.getLocalAddress() != server.getLocalAddress())) {
+					if ((item.getPort() != server.getPort()) && (item.getLocalAddress() != server.getLocalAddress())) {
 						dout = new DataOutputStream(item.getOutputStream());
 						dout.writeUTF(msg);
 					}
 				}
-				System.out.println(msg);
+				// System.out.println(msg);
 			}
 		} catch (IOException e) {
 			try {
