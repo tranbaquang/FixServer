@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-
 public class Client {
 	private InetAddress host;
 	private int port;
@@ -27,7 +26,7 @@ public class Client {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Nhập tên của Bạn: ");
 		String name = scan.nextLine();
-		
+
 		Socket client = new Socket(host, port);
 		System.out.println("đã kết nối tới Server");
 		ReadClient read = new ReadClient(client);
@@ -84,6 +83,7 @@ class WriteClient extends Thread {
 		try {
 			dout = new DataOutputStream(client.getOutputStream());
 			scan = new Scanner(System.in);
+			dout.writeUTF(name);
 			while (true) {
 				String msg = scan.nextLine();
 				dout.writeUTF(name + ": " + msg);
