@@ -24,10 +24,10 @@ public class Server {
 
 	private void execute() throws IOException {
 		ServerSocket server = new ServerSocket(port);
-		System.out.println("[#] Server đã hoạt động\nĐang chờ kết nối ...");
+		System.out.println("[#] Server đã hoạt động mượt mà ^^\nNgồi hóng coi có đứa nào kết nối ...");
 		while (true) {
 			Socket client = server.accept();
-			System.out.println("[#] Co client Da ket noi vao room chat");
+			System.out.println("[#] Có 1 đối tượng giống như con người kết nối");
 			Server.listSocket.add(client);
 			readServer read = new readServer(client);
 			read.start();
@@ -51,19 +51,25 @@ class readServer extends Thread {
 		try {
 			din = new DataInputStream(server.getInputStream());
 			String name = din.readUTF();
-			System.out.println("[#]ahihihi " + name + " da ket noi vao room");
+			System.out.println("[#] " + name + " đã zô nhóm chat ;) ");
 
 			for (Socket item : Server.listSocket) {
 				if ((item.getPort() != server.getPort()) && (item.getLocalAddress() != server.getLocalAddress())) {
 					dout = new DataOutputStream(item.getOutputStream());
-					dout.writeUTF("[#] " + name + " da ket noi voi anh em!!!");
+					dout.writeUTF("[#] " + name + " hiện hình =)) !!!");
 				}
 			}
 			while (true) {
 				String msg = din.readUTF();
 				if(msg.contains("exit")) {
 					Server.listSocket.remove(server);
-					System.out.println("Đã đóng kết nối với " + name);
+					for (Socket item : Server.listSocket) {
+						if ((item.getPort() != server.getPort()) && (item.getLocalAddress() != server.getLocalAddress())) {
+							dout = new DataOutputStream(item.getOutputStream());
+							dout.writeUTF("[#]" + name + " Đã ra đi T.T");
+						}
+					}
+					System.out.println("[#]" + name + " Đã ra đi T.T");
 					din.close();
 					server.close();
 					continue;
@@ -81,7 +87,7 @@ class readServer extends Thread {
 				din.close();
 				server.close();
 			} catch (IOException ex) {
-				System.err.println("[#] U tat duoc server @!!");
+				System.err.println("[#] Ứ tắt được tớ đâu nha :v Lêu lêu :3");
 			}
 		}
 	}
