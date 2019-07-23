@@ -50,16 +50,16 @@ class readServer extends Thread {
 		DataOutputStream dout = null;
 		try {
 			din = new DataInputStream(server.getInputStream());
-			//String name = din.readUTF();
-			byte[] data = new byte[10*1024];
-            int count = din.read(data);
-            byte[] real =new byte[count+1];
-            for(int i=0;i<=count-1;i++) {
-	            real[i]=data[i];
-	            System.out.println(real[i]);
-	            System.out.println("# "+data[i]);
-            }
-            String name = new String(data).trim();
+			// String name = din.readUTF();
+			byte[] data = new byte[1024];
+			int count = din.read(data);
+			byte[] real = new byte[count + 1];
+			for (int i = 0; i <= count - 1; i++) {
+				real[i] = data[i];
+				// System.out.println(real[i]);
+				// System.out.println("# "+data[i]);
+			}
+			String name = new String(data).trim();
 			System.out.println("[#] " + name + " đã zô nhóm chat ;) ");
 
 			for (Socket item : Server.listSocket) {
@@ -70,10 +70,11 @@ class readServer extends Thread {
 			}
 			while (true) {
 				String msg = din.readUTF();
-				if(msg.contains("exit")) {
+				if (msg.contains("exit")) {
 					Server.listSocket.remove(server);
 					for (Socket item : Server.listSocket) {
-						if ((item.getPort() != server.getPort()) && (item.getLocalAddress() != server.getLocalAddress())) {
+						if ((item.getPort() != server.getPort())
+								&& (item.getLocalAddress() != server.getLocalAddress())) {
 							dout = new DataOutputStream(item.getOutputStream());
 							dout.writeUTF("[#]" + name + " Đã ra đi T.T");
 						}
