@@ -50,7 +50,16 @@ class readServer extends Thread {
 		DataOutputStream dout = null;
 		try {
 			din = new DataInputStream(server.getInputStream());
-			String name = din.readUTF();
+			//String name = din.readUTF();
+			byte[] data = new byte[10*1024];
+            int count = din.read(data);
+            byte[] real =new byte[count+1];
+            for(int i=0;i<=count-1;i++) {
+	            real[i]=data[i];
+	            System.out.println(real[i]);
+	            System.out.println("# "+data[i]);
+            }
+            String name = new String(data).trim();
 			System.out.println("[#] " + name + " đã zô nhóm chat ;) ");
 
 			for (Socket item : Server.listSocket) {
@@ -87,7 +96,7 @@ class readServer extends Thread {
 				din.close();
 				server.close();
 			} catch (IOException ex) {
-				System.err.println("[#] Ứ tắt được tớ đâu nha :v Lêu lêu :3");
+				System.err.println(" ");
 			}
 		}
 	}
