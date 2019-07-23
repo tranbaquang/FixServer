@@ -50,16 +50,23 @@ class ReadClient extends Thread {
 		try {
 			din = new DataInputStream(client.getInputStream());
 			while (true) {
-//				String msg = din.readUTF();
-//				System.out.println(msg);
+				/*
+				 * 	Nhan tin nhan dang String
+				 * 		String msg = din.readUTF();
+				 * 		System.out.println(msg);
+				 */
+
+				// Nhan tin nhan dang Byte
+				int count = 0;
 				byte[] msgByte = new byte[1024];
-				int count = din.read(msgByte);
+				count = din.read(msgByte);
 				byte[] real = new byte[count + 1];
 				for (int i = 0; i <= count - 1; i++) {
 					real[i] = msgByte[i];
 					// System.out.println(real[i]);
 					// System.out.println("# "+data[i]);
 				}
+				// Chuyen tin nhan tu Byte qua String de hien thi
 				String msg = new String(msgByte).trim();
 				System.out.println(msg);
 			}
@@ -70,7 +77,7 @@ class ReadClient extends Thread {
 				client.close();
 			} catch (IOException ex) {
 				System.err.println("Lỗi cơm mẹ nấu rồi, ahihi :3");
-				ex.printStackTrace();
+				//ex.printStackTrace();
 			}
 		}
 	}
@@ -96,17 +103,21 @@ class WriteClient extends Thread {
 			// Chuyen name(String) --> nameByte(byte)
 			byte[] nameByte = name.getBytes();
 			dout.write(nameByte);
-			// dout.writeUTF(name);
+			/*
+			 * Gui ten dang String
+			 * 		dout.writeUTF(name);
+			 */
+
 			while (true) {
 				// Nhap tin nhan
 				String msg = scan.nextLine();
 				// gui ten + tin nhan
-				String msgName = (name + ": " + msg);
 				// Chuyen qua dang byte
-				byte[] msgByte = msgName.getBytes();
+				byte[] msgByte = msg.getBytes();
 				// gui tin nhan voi dang byte
 				dout.write(msgByte);
 			}
+			
 		} catch (IOException e) {
 			try {
 				dout.close();
