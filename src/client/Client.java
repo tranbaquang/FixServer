@@ -96,6 +96,7 @@ class WriteClient extends Thread {
 	@Override
 	public void run() {
 		DataOutputStream dout = null;
+		DataInputStream din = null;
 		Scanner scan = null;
 		try {
 			dout = new DataOutputStream(client.getOutputStream());
@@ -116,6 +117,10 @@ class WriteClient extends Thread {
 				byte[] msgByte = msg.getBytes();
 				// gui tin nhan voi dang byte
 				dout.write(msgByte);
+				if (msg.equals("exit")) {
+					dout.close();
+					System.out.println("Bạn đã rời nhóm !!!");
+				}
 			}
 			
 		} catch (IOException e) {
