@@ -116,6 +116,9 @@ class WriteClient extends Thread {
 				byte[] msgByte = msg.getBytes();
 				// gui tin nhan voi dang byte
 				dout.write(msgByte);
+				if(msg.equals("exit")) {
+					dout.close();
+				}
 			}
 			
 		} catch (IOException e) {
