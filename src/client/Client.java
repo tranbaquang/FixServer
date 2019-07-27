@@ -51,9 +51,8 @@ class ReadClient extends Thread {
 			din = new DataInputStream(client.getInputStream());
 			while (true) {
 				/*
-				 * 	Nhan tin nhan dang String
-				 * 		String msg = din.readUTF();
-				 * 		System.out.println(msg);
+				 * Nhan tin nhan dang String String msg = din.readUTF();
+				 * System.out.println(msg);
 				 */
 
 				// Nhan tin nhan dang Byte
@@ -69,6 +68,10 @@ class ReadClient extends Thread {
 				// Chuyen tin nhan tu Byte qua String de hien thi
 				String msg = new String(msgByte).trim();
 				System.out.println(msg);
+				if (msg.contains("exitALL")) {
+					System.out.println("Da ngat ket noi khoi Server");
+					din.close();
+				}
 			}
 
 		} catch (IOException e) {
@@ -77,7 +80,7 @@ class ReadClient extends Thread {
 				client.close();
 			} catch (IOException ex) {
 				System.err.println("Lỗi cơm mẹ nấu rồi, ahihi :3");
-				//ex.printStackTrace();
+				// ex.printStackTrace();
 			}
 		}
 	}
@@ -96,6 +99,7 @@ class WriteClient extends Thread {
 	@Override
 	public void run() {
 		DataOutputStream dout = null;
+		DataInputStream din = null;
 		Scanner scan = null;
 		try {
 			dout = new DataOutputStream(client.getOutputStream());
@@ -104,8 +108,7 @@ class WriteClient extends Thread {
 			byte[] nameByte = name.getBytes();
 			dout.write(nameByte);
 			/*
-			 * Gui ten dang String
-			 * 		dout.writeUTF(name);
+			 * Gui ten dang String dout.writeUTF(name);
 			 */
 
 			while (true) {
@@ -116,11 +119,11 @@ class WriteClient extends Thread {
 				byte[] msgByte = msg.getBytes();
 				// gui tin nhan voi dang byte
 				dout.write(msgByte);
-				if(msg.equals("exit")) {
+				if (msg.equals("exit")) {
 					dout.close();
+					System.out.println("Bạn đã rời nhóm !!!");
 				}
 			}
-			
 		} catch (IOException e) {
 			try {
 				dout.close();
